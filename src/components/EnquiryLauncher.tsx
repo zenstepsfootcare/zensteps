@@ -57,7 +57,8 @@ export function EnquiryLauncher({ phone, phoneHref, offer }: { phone: string; ph
     if (NO_AUTO_POPUP.some((p) => pathname.startsWith(p))) return;
     if (read(() => sessionStorage, SEEN_KEY) || read(() => localStorage, ENQUIRY_SENT_KEY)) return;
     const timer = window.setTimeout(() => {
-      if (!document.querySelector("dialog[open]")) open();
+      // Re-check: a button may already have opened (and they closed) the popup during the delay.
+      if (!document.querySelector("dialog[open]") && !read(() => sessionStorage, SEEN_KEY)) open();
     }, POPUP_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [pathname, open]);

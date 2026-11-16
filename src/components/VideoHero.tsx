@@ -3,7 +3,9 @@ import Link from "next/link";
 import { preload } from "react-dom";
 import { FiArrowRight, FiCheckCircle, FiPhone } from "react-icons/fi";
 import { HeroVideo } from "@/components/HeroVideo";
-import { FRANCHISE_FROM, TAGLINES } from "@/lib/franchise";
+import { EnquireButton } from "@/components/EnquireButton";
+import { FranchisePriceBadge } from "@/components/FranchisePriceBadge";
+import { TAGLINES } from "@/lib/franchise";
 import { getContact } from "@/lib/siteSettings";
 
 /**
@@ -24,11 +26,11 @@ interface VideoHeroProps {
   ctaText?: string;
   ctaLink?: string;
   videoUrl?: string;
-  /** Shown beside the copy on large screens (under it on small ones), e.g. the enquiry form. */
+  /** Shown under the copy on phones and tablets only, e.g. the enquiry form. */
   aside?: React.ReactNode;
 }
 
-const proofPoints = [`Franchise from ${FRANCHISE_FROM}`, "Break-even within 6 months", "Profit margin up to 80%"];
+const proofPoints = ["Break-even within 6 months", "Profit margin up to 80%"];
 
 export async function VideoHero({
   title,
@@ -52,17 +54,15 @@ export async function VideoHero({
       />
       {/* No overlay: the film shows at full clarity; text-legible keeps copy readable on bright frames */}
 
-      <div
-        className={`container-site min-h-[540px] items-center py-16 sm:py-20 lg:min-h-[640px] lg:py-24 ${
-          aside ? "grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12" : "flex"
-        }`}
-      >
-        <div className={`text-legible max-w-3xl ${aside ? "lg:col-span-7" : ""}`}>
+      <div className="container-site flex min-h-[540px] flex-col justify-center gap-10 py-16 sm:py-20 lg:min-h-[640px] lg:py-24">
+        <div className="text-legible max-w-3xl">
           <span className="eyebrow-gold">Foot reflexology {TAGLINES.byline.toLowerCase()}</span>
 
           <h1 className="h1 mt-4 text-white">{title}</h1>
 
           <p className="lead mt-5 max-w-2xl text-white/85">{subtitle}</p>
+
+          <FranchisePriceBadge className="mt-7" />
 
           <ul className="mt-6 flex flex-col gap-2.5 text-sm font-medium text-white sm:flex-row sm:flex-wrap sm:gap-x-6">
             {proofPoints.map((point) => (
@@ -74,10 +74,10 @@ export async function VideoHero({
           </ul>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <Link href={ctaLink} className="btn btn-gold">
+            <EnquireButton href={ctaLink} className="btn btn-gold">
               <span>{ctaText}</span>
               <FiArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            </EnquireButton>
             <Link href="/contact" className="btn btn-dark">
               Book a Session
             </Link>
@@ -90,7 +90,8 @@ export async function VideoHero({
             </a>
           </div>
         </div>
-        {aside && <div className="lg:col-span-5">{aside}</div>}
+        {/* Desktop has the Enquire buttons and popup instead, so the hero stays clean there. */}
+        {aside && <div className="w-full max-w-xl lg:hidden">{aside}</div>}
       </div>
     </section>
   );

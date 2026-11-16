@@ -11,8 +11,10 @@ import { HighlightingSession } from "@/components/HighlightingSession";
 import { SectionHeader } from "@/components/SectionHeader";
 import { HeroVideo } from "@/components/HeroVideo";
 import { HeroEnquiryCard } from "@/components/HeroEnquiryCard";
+import { EnquireButton } from "@/components/EnquireButton";
+import { FranchisePriceBadge } from "@/components/FranchisePriceBadge";
 import { BRAND_VIDEO } from "@/components/VideoHero";
-import { FRANCHISE_FROM, TAGLINES } from "@/lib/franchise";
+import { TAGLINES } from "@/lib/franchise";
 import { getContact } from "@/lib/siteSettings";
 import { preload } from "react-dom";
 import { FiArrowRight, FiPhone, FiMail, FiMapPin } from "react-icons/fi";
@@ -39,24 +41,24 @@ export default async function FranchisePage() {
           {/* No overlay: the film shows at full clarity; text-legible keeps copy readable */}
           <HeroVideo {...BRAND_VIDEO} className="absolute inset-0 -z-10 h-full w-full object-cover" />
 
-          <div className="container-site grid grid-cols-1 items-center gap-10 py-16 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:py-24">
-            <div className="text-legible max-w-3xl lg:col-span-7">
+          <div className="container-site flex flex-col gap-10 py-16 sm:py-20 lg:py-24">
+            <div className="text-legible max-w-3xl">
               <img src="/zensteps-logo.png" alt="Zen Steps" className="mb-8 h-16 w-auto object-contain sm:h-20" />
 
-              <span className="eyebrow-gold">Franchise starting from {FRANCHISE_FROM}</span>
+              <FranchisePriceBadge />
 
-              <h1 className="h1 mt-4 text-white">{TAGLINES.promise}</h1>
+              <h1 className="h1 mt-6 text-white">{TAGLINES.promise}</h1>
 
               <p className="lead mt-5 max-w-2xl text-white/85">
                 Open your own Zen Steps foot reflexology centre. We provide the interior design, reflexology materials,
-                trained therapists and marketing support. {TAGLINES.journey}.
+                trained therapists and marketing support.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a href="#apply" className="btn btn-gold">
+                <EnquireButton href="#apply" className="btn btn-gold">
                   <span>Apply for Franchise</span>
                   <FiArrowRight className="h-4 w-4" aria-hidden="true" />
-                </a>
+                </EnquireButton>
                 <a href="#investment" className="btn btn-dark">
                   Investment &amp; ROI
                 </a>
@@ -69,7 +71,8 @@ export default async function FranchisePage() {
                 </a>
               </div>
             </div>
-            <div className="lg:col-span-5">
+            {/* Desktop has the Enquire buttons and popup instead, so the hero stays clean there. */}
+            <div className="w-full max-w-xl lg:hidden">
               <HeroEnquiryCard source="franchise page hero" />
             </div>
           </div>

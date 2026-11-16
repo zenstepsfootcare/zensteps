@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX, FiPhone, FiArrowRight } from "react-icons/fi";
 import { FRANCHISE_FROM } from "@/lib/franchise";
+import { EnquireButton } from "@/components/EnquireButton";
 
 const FRANCHISE_NAV_LINKS = [
   { label: "About", href: "/about" },
@@ -31,7 +32,9 @@ export function SiteHeader({ phone, phoneHref }: { phone: string; phoneHref: str
       <div className="bg-brand-dark text-white/80">
         <div className="container-site flex h-9 items-center justify-center gap-3 text-xs sm:gap-4">
           <p className="truncate">
-            <span className="font-semibold text-white">Franchise starting from {FRANCHISE_FROM}</span>
+            <span className="font-semibold text-white">
+              Franchise starting from <span className="text-[13px] font-bold text-gold">{FRANCHISE_FROM}</span>
+            </span>
             <span className="hidden sm:inline">
               <span className="mx-2 text-white/30">/</span>
               Foot reflexology by people with visual impairments
@@ -84,16 +87,14 @@ export function SiteHeader({ phone, phoneHref }: { phone: string; phoneHref: str
               })}
             </nav>
 
-            <Link href="/franchise" className="btn btn-gold btn-sm hidden lg:inline-flex">
+            <EnquireButton className="btn btn-gold btn-sm hidden lg:inline-flex">
               <span>Apply for Franchise</span>
               <FiArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            </EnquireButton>
 
             {/* Mobile and tablet actions */}
             <div className="flex items-center gap-2 lg:hidden">
-              <Link href="/franchise" className="btn btn-gold btn-sm">
-                Franchise
-              </Link>
+              <EnquireButton className="btn btn-gold btn-sm">Franchise</EnquireButton>
               <button
                 type="button"
                 onClick={() => setMenuOpenedOn(mobileMenuOpen ? null : pathname)}
@@ -136,9 +137,9 @@ export function SiteHeader({ phone, phoneHref }: { phone: string; phoneHref: str
                   <FiPhone className="h-4 w-4" aria-hidden="true" />
                   <span>Call {phone}</span>
                 </a>
-                <Link href="/franchise#apply" onClick={closeMenu} className="btn btn-gold w-full">
+                <EnquireButton onClick={closeMenu} className="btn btn-gold w-full">
                   Apply for Franchise
-                </Link>
+                </EnquireButton>
               </div>
             </div>
           </div>

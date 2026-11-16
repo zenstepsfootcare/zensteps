@@ -6,6 +6,7 @@ import { ABOUT, FRANCHISE_FROM, ROI_NOTE, TAGLINES, THERAPIES } from "@/lib/fran
 import { getContact } from "@/lib/siteSettings";
 import { TrackingTags } from "@/components/TrackingTags";
 import { EnquiryLauncher } from "@/components/EnquiryLauncher";
+import { EnquireButton } from "@/components/EnquireButton";
 
 const franchiseLinks = [
   { label: "Franchise Opportunity", href: "/franchise" },
@@ -77,10 +78,10 @@ export async function Footer() {
             </p>
           </div>
           <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
-            <Link href="/franchise#apply" className="btn btn-gold">
+            <EnquireButton className="btn btn-gold">
               <span>Apply for Franchise</span>
               <FiArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            </EnquireButton>
             <a href={contact.phoneHref} className="btn btn-outline-light">
               <FiPhone className="h-4 w-4" aria-hidden="true" />
               <span>{contact.phone}</span>
