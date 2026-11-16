@@ -1,46 +1,240 @@
+import React from "react";
+import Link from "next/link";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { VideoHero } from "@/components/VideoHero";
+import { HeroEnquiryCard } from "@/components/HeroEnquiryCard";
+import { StatsBar } from "@/components/StatsBar";
+import { SectionHeader } from "@/components/SectionHeader";
+import { AboutIntro } from "@/components/AboutIntro";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
+import { HighlightingSession } from "@/components/HighlightingSession";
+import { FranchiseEconomics } from "@/components/FranchiseEconomics";
+import { BrandSupport } from "@/components/BrandSupport";
+import { FranchiseForm } from "@/components/FranchiseForm";
+import { ServiceCard } from "@/components/ServiceCard";
+import { TestimonialCard } from "@/components/TestimonialCard";
+import { FAQAccordion } from "@/components/FAQAccordion";
+import { PostCard } from "@/components/PostCard";
+import { BenefitsSection } from "@/components/BenefitsSection";
+import { SocialHighlights } from "@/components/SocialHighlights";
+import { SECTION_KEYS, sectionSettings } from "@/lib/homeSections";
+import { TAGLINES } from "@/lib/franchise";
+import { getContact } from "@/lib/siteSettings";
+import { FiArrowRight, FiPhone } from "react-icons/fi";
 
 export const revalidate = 3600;
-const readHomeContent = unstable_cache(async () => {
-  const [services, locations, posts, faqs, media] = await Promise.all([
-    prisma.service.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" }, take: 3 }),
-    prisma.location.findMany({ where: { isActive: true }, orderBy: { city: "asc" }, take: 8 }),
-    prisma.blogPost.findMany({ where: { isPublished: true }, orderBy: { publishedAt: "desc" }, take: 3 }),
-    prisma.fAQ.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" }, take: 6 }),
-    prisma.galleryItem.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" }, take: 4 }),
-  ]);
-  return { services, locations, posts, faqs, media };
-}, ["zen-steps-home-content"], { revalidate: 3600, tags: ["home"] });
 
-const defaultServices = [
-  { title: "Stone path", shortDesc: "A guided walk across thoughtfully arranged natural textures. Find a pace that feels right, one step at a time.", duration: "25 min · Guided", slug: "stone-path" },
-  { title: "Grounding hour", shortDesc: "A quiet, barefoot practice with breath and balance at its centre. A reset for busy minds and tired feet.", duration: "40 min · Slow", slug: "grounding-hour" },
-  { title: "Foot & stillness", shortDesc: "Warm water, unhurried care and a little space to notice what your body has been asking for.", duration: "30 min · Restore", slug: "foot-stillness" },
-];
-const defaultFaqs = [
-  { id: "first-visit", question: "What happens at a first visit?", answer: "A practitioner will explain the session, ask about your comfort and adapt the pace to you. You can pause or stop at any time." },
-  { id: "what-to-wear", question: "What should I wear?", answer: "Choose comfortable clothes. Sessions are generally done barefoot; your local centre can advise you about anything specific to your booking." },
-  { id: "medical-care", question: "Are sessions medical treatment?", answer: "No. Zen Steps sessions are for relaxation and everyday wellbeing and do not diagnose, treat or replace advice from a qualified health professional." },
-];
+const getHomeData = unstable_cache(
+  async () => {
+    const [services, benefits, videos, settingRows, testimonials, posts, faqs] = await Promise.all([
+      prisma.service.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        take: 6,
+      }),
+      prisma.benefit.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        select: { id: true, title: true, description: true, icon: true },
+      }),
+      prisma.socialVideo.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        take: 8,
+        select: {
+          id: true,
+          url: true,
+          title: true,
+          coverImage: true,
+          views: true,
+          likes: true,
+          comments: true,
+        },
+      }),
+      prisma.siteSettings.findMany({
+        where: { key: { in: SECTION_KEYS } },
+        select: { key: true, value: true },
+      }),
+      prisma.testimonial.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        take: 4,
+      }),
+      prisma.blogPost.findMany({
+        where: { isPublished: true },
+        orderBy: { publishedAt: "desc" },
+        take: 3,
+      }),
+      prisma.fAQ.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        take: 10,
+      }),
+    ]);
+    return { services, benefits, videos, settingRows, testimonials, posts, faqs };
+  },
+  ["zen-steps-home-brochure-v1"],
+  { revalidate: 3600, tags: ["home", "services"] }
+);
+
 export default async function Home() {
-  const content = await readHomeContent().catch(() => ({ services: [], locations: [], posts: [], faqs: [], media: [] }));
-  const services = content.services.length ? content.services : defaultServices; const posts = content.posts;
-  const faqs = content.faqs.length ? content.faqs : defaultFaqs;
-  return <main>
-    <header className="site-header"><a className="wordmark" href="#top">zen<span>steps</span><i>®</i></a><label className="menu-toggle" htmlFor="nav-toggle">Menu</label><input className="nav-check" id="nav-toggle" type="checkbox"/><nav><a href="#practice">The practice</a><a href="#centres">Find a centre</a><a href="#journal">Field notes</a><a className="nav-cta" href="#visit">Plan a visit <span>+</span></a></nav></header>
-    <section id="top" className="hero"><div className="hero-image" role="img" aria-label="A quiet stone path in a garden"/><div className="hero-copy"><p className="eyebrow">A slower kind of wellness - Across India</p><h1>Come back<br/>to your <em>feet.</em></h1><p className="hero-intro">A considered pause for the part of you that carries everything. Find your footing with guided stone-path sessions and grounding rituals.</p><a className="text-link" href="#practice">Discover the practice <span>+</span></a></div><div className="hero-caption">01 - 03 <span>THE BODY KNOWS THE WAY</span></div><div className="hero-stamp">EST.<br/>IN<br/>INDIA</div></section>
-    <section className="intro section-pad"><div className="section-index">01 / A small beginning</div><div className="intro-content"><p className="eyebrow">Wellness, without the noise</p><h2>Make room for<br/>a <em>different</em> rhythm.</h2><div className="intro-bottom"><p>Zen Steps brings together the simple intelligence of touch, texture and time. Each visit is guided by a trained practitioner, shaped around how you arrive, and held in a space made for doing less.</p><a className="text-link" href="#practice">How it works <span>+</span></a></div></div></section>
-    <section className="numbers"><div><b>01</b><span>Arrive as you are</span></div><div><b>20-45</b><span>Minutes, at your pace</span></div><div><b>All India</b><span>Find us where you are</span></div></section>
-    <section id="practice" className="practice section-pad"><div className="section-heading"><div><p className="eyebrow">02 / The practice</p><h2>Small rituals.<br/><em>Steadier days.</em></h2></div><p>There is no ideal way to begin. Choose a guided session, tell us what you need, and let the ground set the pace.</p></div><div className="practice-list">{services.map((service,index)=><article key={service.slug}><span className="practice-no">0{index+1}</span><div><h3>{service.title}</h3><p>{service.shortDesc}</p></div><span className="practice-meta">{service.duration || "GUIDED SESSION"}</span><a href="#visit" aria-label="Ask about this session">↗</a></article>)}</div><p className="small-note">Our sessions support relaxation and everyday wellbeing. They are not a substitute for medical care.</p></section>
-    <section className="statement"><div className="statement-image"/><div className="statement-copy"><p className="eyebrow">03 / A practice for everyone</p><h2>Care should<br/>meet you <em>where<br/>you are.</em></h2><p>Across our centres, practitioners make each session personal: checking in, adapting the pace, and helping you feel at ease from the first step.</p><a className="text-link" href="#centres">Meet your local team <span>+</span></a></div></section>
-    {content.media.length > 0 && <section className="media-wall section-pad"><p className="eyebrow">A look around our spaces</p><div className="media-wall-grid">{content.media.map(item=><figure key={item.id}>{item.mediaType === "video" ? <video src={item.mediaUrl} controls playsInline/> : <img src={item.mediaUrl} alt={item.title || "Zen Steps centre"}/>}<figcaption>{item.title}</figcaption></figure>)}</div></section>}
-    <section className="benefits section-pad"><p className="eyebrow">04 / What you might notice</p><div className="benefit-grid"><h2>Less rush.<br/>More <em>room.</em></h2><ul><li><span>01</span>A moment to slow down</li><li><span>02</span>Attention back in your body</li><li><span>03</span>A gentler end to a long day</li><li><span>04</span>Time set aside, just for you</li></ul></div></section>
-    <section id="visit" className="visit"><div className="visit-copy"><p className="eyebrow">05 / Make a little time</p><h2>Your first<br/>step is a <em>hello.</em></h2><p>Tell us where you are and what kind of pause you have in mind. A nearby centre will help you find a session that fits.</p><div className="visit-details"><span>01 - Share a few details</span><span>02 - We will call to find a time</span><span>03 - Come as you are</span></div></div><form className="enquiry-form" action="/api/inquiries" method="post"><label>Your name<input name="name" placeholder="How should we address you?" required/></label><label>Email<input name="email" type="email" placeholder="you@example.com" required/></label><label>Phone number<input name="phone" inputMode="tel" placeholder="+91" required/></label><label>City<input name="city" placeholder="Where are you based?" required/></label><label>What would you like to explore?<select name="interest"><option value="">Choose a starting point</option><option>Stone path</option><option>Grounding hour</option><option>Foot &amp; stillness</option><option>Franchise partnership</option></select></label><button className="submit-button" type="submit">Send an enquiry <span>+</span></button><small>By sending this, you agree to be contacted by Zen Steps about your enquiry.</small></form></section>
-    <section id="centres" className="centres section-pad"><div className="section-heading"><div><p className="eyebrow">06 / Find your way here</p><h2>A nearby place<br/>to <em>begin.</em></h2></div><a className="text-link" href="mailto:hello@zensteps.in">Ask us about your city <span>+</span></a></div><div className="centre-map"><div className="map-lines"/><span className="map-label">INDIA</span><i className="pin pin-one"/><i className="pin pin-two"/><i className="pin pin-three"/><i className="pin pin-four"/><div className="map-caption">Ask us about current centre availability in your city.</div></div><div className="centre-list">{content.locations.length ? content.locations.map(location=><article key={location.id}><b>{location.city}</b><span>+</span><a href={"tel:"+location.phone}>{location.phone}</a></article>) : <p className="centre-empty">Our centre list is being prepared. Ask us about your city and we will get back to you.</p>}</div></section>
-    <section id="journal" className="journal section-pad"><div className="section-heading"><div><p className="eyebrow">07 / Field notes</p><h2>Things we are<br/><em>thinking about.</em></h2></div><a className="text-link" href="/journal">All notes <span>+</span></a></div><div className="journal-grid">{posts.length ? posts.map((post,index)=><a key={post.id} href={"/journal/"+post.slug} className="journal-item"><div className={"journal-art art-"+["one","two","three"][index%3]}><span>{post.category}</span><b>↗</b></div><small>{post.author} · FIELD NOTE</small><h3>{post.title}</h3></a>) : <p className="journal-empty">New field notes are being prepared. Check back soon.</p>}</div></section>
-    <section className="faq-section section-pad"><p className="eyebrow">08 / A few questions</p><h2>Before you <em>arrive.</em></h2><div className="faq-list">{faqs.map(item=><details key={item.id}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section><section className="closing"><p className="eyebrow">A practice you can grow with</p><h2>Bring a little<br/>more <em>ground</em><br/>to your city.</h2><a className="text-link" href="/franchise">Explore a Zen Steps partnership <span>+</span></a></section>
-    <footer className="footer"><a className="wordmark" href="#top">zen<span>steps</span><i>®</i></a><p>Make room to feel well.<br/>Made with care in India.</p><div className="footer-links"><a href="#practice">The practice</a><a href="#centres">Find a centre</a><a href="/franchise">Partnerships</a><a href="/admin/login">Admin</a></div><div className="footer-bottom"><span>+</span><span>Wellness for the everyday.</span><a href="mailto:hello@zensteps.in">Get in touch ↗</a></div></footer>
-  </main>;
-}
+  const data = await getHomeData().catch(() => ({
+    services: [],
+    benefits: [],
+    videos: [],
+    settingRows: [],
+    testimonials: [],
+    posts: [],
+    faqs: [],
+  }));
+  const sections = sectionSettings(data.settingRows);
+  const contact = await getContact();
 
+  return (
+    <div className="flex min-h-screen flex-col bg-paper">
+      <Header />
+
+      <main className="flex-1">
+        {/* 1. Video hero */}
+        <VideoHero
+          title={TAGLINES.promise}
+          subtitle="Zen Steps is a premium foot reflexology and wellness centre, with every session given by trained therapists with visual impairments. Book a session, or open your own Zen Steps centre."
+          aside={<HeroEnquiryCard source="home page hero" />}
+        />
+
+        {/* 2. Franchise at a glance */}
+        <StatsBar />
+
+        {/* 3. About us, our goal, foot reflexology map */}
+        <AboutIntro />
+
+        {/* 4. Why choose a Zen Steps franchise */}
+        <WhyChooseUs />
+
+        {/* 5. Therapy menu */}
+        {data.services.length > 0 && (
+          <section id="therapies" className="section bg-paper">
+            <div className="container-site">
+              <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-12">
+                <SectionHeader
+                  eyebrow="Therapy Menu"
+                  title="Choose Your Session"
+                  subtitle="Six foot reflexology therapies from 40 to 75 minutes, starting at ₹450."
+                />
+                <Link href="/services" className="link-arrow shrink-0">
+                  <span>View Full Therapy Menu</span>
+                  <FiArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {data.services.map((service) => (
+                  <ServiceCard key={service.slug} {...service} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* 6. Benefits of reflexology (admin: Content manager > Benefits / Section settings) */}
+        <BenefitsSection benefits={data.benefits} settings={sections} />
+
+        {/* 7. Healing hands, meaningful impact */}
+        <HighlightingSession />
+
+        {/* 8. Investment plans and monthly ROI */}
+        <FranchiseEconomics />
+
+        {/* 9. Brand support and franchise partner */}
+        <BrandSupport />
+
+        {/* 10. Instagram and YouTube highlights (admin: Content manager > Social videos) */}
+        <SocialHighlights videos={data.videos} settings={sections} />
+
+        {/* 11. Guest feedback (admin: Testimonials) */}
+        {data.testimonials.length > 0 && (
+          <section className="section bg-paper">
+            <div className="container-site">
+              <SectionHeader eyebrow="Guest Stories" title="What Our Guests Say" className="mb-10 lg:mb-12" />
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {data.testimonials.map((testimonial) => (
+                  <TestimonialCard key={testimonial.id} {...testimonial} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* 12. Franchise application */}
+        <section id="apply" className="section bg-cream">
+          <div className="container-site">
+            <div className="mx-auto max-w-4xl">
+              <SectionHeader
+                eyebrow="Become a Franchise Partner"
+                title="Apply for a Zen Steps Franchise"
+                subtitle="Fill in the form, or call us to know more."
+                align="center"
+                className="mb-6"
+              />
+              <p className="mb-10 text-center">
+                <a href={contact.phoneHref} className="link-arrow">
+                  <FiPhone className="h-4 w-4" aria-hidden="true" />
+                  <span>{contact.phone}</span>
+                </a>
+              </p>
+              <FranchiseForm />
+            </div>
+          </div>
+        </section>
+
+        {/* 13. FAQs */}
+        {data.faqs.length > 0 && (
+          <section id="faq" className="section bg-paper">
+            <div className="container-site">
+              <div className="mx-auto max-w-3xl">
+                <SectionHeader
+                  eyebrow="Questions"
+                  title="Frequently Asked Questions"
+                  subtitle="About our franchise plans and our therapy sessions."
+                  align="center"
+                  className="mb-10"
+                />
+                <FAQAccordion items={data.faqs} />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* 14. Latest blog articles (admin: Content manager > Journal) */}
+        {data.posts.length > 0 && (
+          <section className="section bg-cream">
+            <div className="container-site">
+              <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-12">
+                <SectionHeader
+                  eyebrow="From the Blog"
+                  title="Foot Care and Wellness Notes"
+                  subtitle="Guidance on reflexology, foot care and everyday well-being."
+                />
+                <Link href="/journal" className="link-arrow shrink-0">
+                  <span>Read the Blog</span>
+                  <FiArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {data.posts.map((post) => (
+                  <PostCard key={post.slug} post={post} tone="paper" headingLevel="h3" />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

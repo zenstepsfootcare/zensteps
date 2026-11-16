@@ -6,6 +6,8 @@ export default withAuth(
     return NextResponse.next()
   },
   {
+    // Send signed-out visitors to the Zen login page, not NextAuth's generic one.
+    pages: { signIn: '/admin/login' },
     callbacks: {
       authorized: ({ token, req }) => {
         // Protect admin routes (except login)

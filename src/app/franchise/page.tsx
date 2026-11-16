@@ -1,5 +1,137 @@
-import Link from "next/link";
+import React from "react";
+import type { Metadata } from "next";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { FranchiseForm } from "@/components/FranchiseForm";
+import { FranchiseEconomics } from "@/components/FranchiseEconomics";
+import { BrandSupport } from "@/components/BrandSupport";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
+import { StatsBar } from "@/components/StatsBar";
+import { HighlightingSession } from "@/components/HighlightingSession";
+import { SectionHeader } from "@/components/SectionHeader";
+import { HeroVideo } from "@/components/HeroVideo";
+import { HeroEnquiryCard } from "@/components/HeroEnquiryCard";
+import { BRAND_VIDEO } from "@/components/VideoHero";
+import { FRANCHISE_FROM, TAGLINES } from "@/lib/franchise";
+import { getContact } from "@/lib/siteSettings";
+import { preload } from "react-dom";
+import { FiArrowRight, FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 
-export default function FranchisePage() {
-  return <main className="partner-page"><header><Link className="wordmark" href="/">zen<span>steps</span><i>®</i></Link><Link href="/">Back to the home page ↗</Link></header><section className="partner-hero"><p className="eyebrow">A LOCAL PRACTICE, GROWN WITH CARE</p><h1>Bring a quieter<br/>kind of <em>wellness</em><br/>to your city.</h1><p>We’re building a network of welcoming, practitioner-led spaces across India. If you care about everyday wellbeing and thoughtful local business, let’s start a conversation.</p><a className="text-link" href="#enquire">Start a conversation <span>↘</span></a></section><section className="partner-details"><div><p className="eyebrow">A good fit begins with a good conversation</p><h2>Room to grow,<br/><em>with support.</em></h2></div><div><p>Each Zen Steps centre is shaped by its neighbourhood. Partners receive guidance on training, setting up a calm space, and bringing the practice to local people.</p><p>Share your city and what draws you to this work. Our team will get in touch to discuss the next steps and answer your questions.</p><p className="small-note">Partnership terms and availability vary by location. Submitting an enquiry does not create an agreement.</p></div></section><section id="enquire" className="partner-form"><div><p className="eyebrow">PARTNER ENQUIRY</p><h2>Tell us a little<br/>about <em>yourself.</em></h2></div><form action="/api/inquiries" method="post"><input type="hidden" name="interest" value="Franchise partnership"/><label>Your name<input name="name" required/></label><label>Email<input name="email" type="email" required/></label><label>Phone<input name="phone" inputMode="tel" required/></label><label>City<input name="city" required/></label><button className="submit-button">Send an enquiry <span>↗</span></button></form></section><footer><span>© 2026 Zen Steps India</span><Link href="/">zensteps.in ↗</Link></footer><style>{`.partner-page{background:var(--paper)}.partner-page header{height:76px;padding:0 7vw;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.partner-page header>a:last-child{font-size:10px}.partner-hero{padding:100px 15vw 115px;background:#2b2e28;color:var(--paper)}.partner-hero .eyebrow,.partner-details .eyebrow,.partner-form .eyebrow{color:#bd795f}.partner-hero h1{font:clamp(68px,9vw,120px)/.87 var(--display);font-weight:400;letter-spacing:-3px;margin:0}.partner-hero h1 em,.partner-details h2 em,.partner-form h2 em{color:#bd795f;font-weight:400}.partner-hero>p:not(.eyebrow){font-size:14px;line-height:1.8;max-width:470px;color:#d7d5cc;margin:30px 0}.partner-details{padding:100px 15vw;display:grid;grid-template-columns:1fr 1fr;gap:10%}.partner-details h2,.partner-form h2{font:clamp(48px,6vw,75px)/.95 var(--display);font-weight:400;margin:0}.partner-details>div+div{font-size:13px;line-height:1.9;color:#66665f}.partner-details .small-note{font-size:10px}.partner-form{background:#e9e5db;padding:85px 15vw;display:grid;grid-template-columns:1fr 1fr;gap:10%}.partner-form form{display:flex;flex-direction:column;gap:19px}.partner-form label{font-size:9px;text-transform:uppercase;letter-spacing:1px}.partner-form input{display:block;width:100%;border:0;border-bottom:1px solid #aaa69d;background:none;padding:12px 0;outline:none}.partner-form .submit-button{border:0;background:var(--ink);color:white;padding:16px;text-align:left;display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;letter-spacing:1px;cursor:pointer}.partner-page footer{padding:22px 7vw;display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}@media(max-width:700px){.partner-hero{padding:80px 8%}.partner-details,.partner-form{padding:70px 8%;grid-template-columns:1fr;gap:35px}}`}</style></main>;
+export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Zen Steps Franchise – Start From ₹1.5 Lakh",
+  description:
+    "Open a Zen Steps foot reflexology centre from ₹1.5 lakh. Break-even within 6 months, profit margin up to 80%, with interiors, therapists and marketing provided by the brand.",
+};
+
+export default async function FranchisePage() {
+  preload(BRAND_VIDEO.poster, { as: "image", fetchPriority: "high" });
+  const contact = await getContact();
+
+  return (
+    <div className="flex min-h-screen flex-col bg-paper">
+      <Header />
+
+      <main className="flex-1">
+        {/* Franchise hero with background video */}
+        <section className="relative isolate overflow-hidden bg-brand-dark text-white">
+          {/* No overlay: the film shows at full clarity; text-legible keeps copy readable */}
+          <HeroVideo {...BRAND_VIDEO} className="absolute inset-0 -z-10 h-full w-full object-cover" />
+
+          <div className="container-site grid grid-cols-1 items-center gap-10 py-16 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:py-24">
+            <div className="text-legible max-w-3xl lg:col-span-7">
+              <img src="/zensteps-logo.png" alt="Zen Steps" className="mb-8 h-16 w-auto object-contain sm:h-20" />
+
+              <span className="eyebrow-gold">Franchise starting from {FRANCHISE_FROM}</span>
+
+              <h1 className="h1 mt-4 text-white">{TAGLINES.promise}</h1>
+
+              <p className="lead mt-5 max-w-2xl text-white/85">
+                Open your own Zen Steps foot reflexology centre. We provide the interior design, reflexology materials,
+                trained therapists and marketing support. {TAGLINES.journey}.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a href="#apply" className="btn btn-gold">
+                  <span>Apply for Franchise</span>
+                  <FiArrowRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+                <a href="#investment" className="btn btn-dark">
+                  Investment &amp; ROI
+                </a>
+                <a
+                  href={contact.phoneHref}
+                  className="inline-flex h-12 items-center justify-center gap-2 px-2 text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                >
+                  <FiPhone className="h-4 w-4 text-gold" aria-hidden="true" />
+                  <span>Call {contact.phone}</span>
+                </a>
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <HeroEnquiryCard source="franchise page hero" />
+            </div>
+          </div>
+        </section>
+
+        <StatsBar />
+
+        <WhyChooseUs />
+
+        {/* Investment plans and monthly ROI */}
+        <FranchiseEconomics />
+
+        {/* Brand support and franchise partner */}
+        <BrandSupport />
+
+        {/* Real sessions and social impact */}
+        <HighlightingSession />
+
+        {/* Application form */}
+        <section id="apply" className="section bg-cream">
+          <div className="container-site">
+            <div className="mx-auto max-w-4xl">
+              <SectionHeader
+                eyebrow="Become a Franchise Partner"
+                title="Apply for a Zen Steps Franchise"
+                subtitle="Tell us where you would like to open your centre and which setup suits you. Our franchise team will call you."
+                align="center"
+                className="mb-10"
+              />
+              <FranchiseForm />
+            </div>
+          </div>
+        </section>
+
+        {/* Direct franchise desk contact */}
+        <section className="border-t border-border bg-paper">
+          <div className="container-site flex flex-col items-start justify-between gap-6 py-10 md:flex-row md:items-center">
+            <div>
+              <h2 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">Call us to know more</h2>
+              <p className="mt-1 flex items-start gap-2 text-[15px] text-secondary">
+                <FiMapPin className="mt-1 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
+                <span>{contact.address}</span>
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 text-sm font-semibold text-ink sm:flex-row sm:items-center sm:gap-8">
+              <a href={contact.phoneHref} className="flex items-center gap-2 transition-colors hover:text-brand-light">
+                <FiPhone className="h-4 w-4 text-brand" aria-hidden="true" />
+                <span>{contact.phone}</span>
+              </a>
+              <a
+                href={`mailto:${contact.franchiseEmail}`}
+                className="flex items-center gap-2 transition-colors hover:text-brand-light"
+              >
+                <FiMail className="h-4 w-4 text-brand" aria-hidden="true" />
+                <span>{contact.franchiseEmail}</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
 }

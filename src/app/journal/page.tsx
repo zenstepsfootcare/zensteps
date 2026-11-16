@@ -1,9 +1,73 @@
-import Link from "next/link";
+import React from "react";
+import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
-const readPosts = unstable_cache(() => prisma.blogPost.findMany({ where: { isPublished: true }, orderBy: { publishedAt: "desc" } }), ["zen-steps-journal"], { revalidate: 3600, tags: ["journal"] });
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { PageHero } from "@/components/PageHero";
+import { PostCard } from "@/components/PostCard";
+
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Blog & Clinical Journal — Zen Steps",
+  description:
+    "Essays, anatomical studies, and clinical observations on plantar health, reflexology, and somatic restoration from the Zen Steps faculty.",
+};
+
+const getPosts = unstable_cache(
+  async () => {
+    return prisma.blogPost.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: "desc" },
+    });
+  },
+  ["zen-steps-all-posts-v2"],
+  { revalidate: 3600, tags: ["journal"] }
+);
+
 export default async function JournalPage() {
-  const posts = await readPosts().catch(() => []);
-  return <main className="journal-page"><Link href="/">← Zen Steps</Link><p className="eyebrow">FIELD NOTES / A JOURNAL</p><h1>Ideas for a<br/><em>steadier day.</em></h1><div className="journal-grid">{posts.map((post,index)=><Link key={post.id} href={`/journal/${post.slug}`} className="journal-item"><div className={`journal-art art-${["one","two","three"][index%3]}`}>{post.coverImage&&<img src={post.coverImage} alt=""/>}<span>{post.category}</span></div><small>{post.author} · {post.publishedAt?.toLocaleDateString("en-IN")}</small><h2>{post.title}</h2><p>{post.excerpt}</p></Link>)}</div>{posts.length===0&&<p className="empty">New field notes are on their way. Check back soon.</p>}<style>{`.journal-page{padding:45px 10vw}.journal-page>a:first-child{font-size:11px}.journal-page .eyebrow{color:var(--accent);margin-top:45px}.journal-page h1{font:clamp(60px,8vw,100px)/.9 var(--display);font-weight:400;letter-spacing:-2px;margin:0 0 50px}.journal-page h1 em{color:var(--accent);font-weight:400}.journal-page .journal-grid{grid-template-columns:repeat(3,1fr)}.journal-page .journal-art{height:250px}.journal-page .journal-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.journal-page .journal-art span{background:var(--paper);padding:5px}.journal-page .journal-item h2{font:25px var(--display);font-weight:400;margin:10px 0}.journal-page .journal-item p{font-size:12px;line-height:1.7;color:var(--muted)}.journal-page .empty{font-size:13px;color:var(--muted)}@media(max-width:700px){.journal-page{padding:30px 7%}.journal-page .journal-grid{grid-template-columns:1fr}}`}</style></main>;
+  const posts = await getPosts().catch(() => []);
+  const [featured, ...rest] = posts;
+
+  return (
+    <div className="flex min-h-screen flex-col bg-paper">
+      <Header />
+
+      <main className="flex-1">
+        <PageHero
+          eyebrow="Field Notes & Clinical Journal"
+          title="Reflexology Science & Grounding Research."
+          subtitle="Essays, anatomical studies, and clinical observations on human plantar health, sensory deprivation, and somatic restoration."
+        />
+
+        <section className="section bg-paper">
+          <div className="container-site">
+            {!featured ? (
+              <p className="py-16 text-center text-[15px] text-secondary">
+                New field notes are being drafted by our clinical faculty. Please check back shortly.
+              </p>
+            ) : (
+              <>
+                <PostCard post={featured} featured />
+
+                {rest.length > 0 && (
+                  // 3 columns only when rows fill evenly; otherwise 2 (avoids an empty slot)
+                  <div
+                    className={`mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 ${rest.length % 3 === 0 ? "lg:grid-cols-3" : ""}`}
+                  >
+                    {rest.map((post) => (
+                      <PostCard key={post.slug} post={post} />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
 }

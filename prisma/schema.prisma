@@ -77,8 +77,29 @@ model BlogPost {
   tags        String[]
   isPublished Boolean   @default(false)
   publishedAt DateTime?
+  seoTitle       String?
+  seoDescription String?
+  noIndex        Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+// Admin-managed content pages (privacy policy, terms, guides...) served at /pages/[slug]
+model Page {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  summary        String?
+  content        String   @db.Text // plain paragraphs or HTML, rendered by RichContent
+  heroImage      String?
+  seoTitle       String?
+  seoDescription String?
+  noIndex        Boolean  @default(false)
+  showInFooter   Boolean  @default(false)
+  sortOrder      Int      @default(0)
+  isPublished    Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Testimonial {
@@ -104,17 +125,23 @@ model FranchiseInquiry {
   investment   String?
   message      String?  @db.Text
   status       String   @default("new") // "new" | "contacted" | "approved" | "rejected"
+  notes        String?  @db.Text // internal, admin only
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
+// Session booking requests from the website contact form
 model ContactSubmission {
   id        String   @id @default(cuid())
   name      String
   email     String
   phone     String?
+  city      String?
+  interest  String? // therapy asked for
   subject   String
   message   String   @db.Text
+  status    String   @default("new") // "new" | "contacted" | "booked" | "closed"
+  notes     String?  @db.Text // internal, admin only
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
@@ -158,4 +185,31 @@ model SiteSettings {
   id    String @id @default(cuid())
   key   String @unique
   value String @db.Text
+}
+
+// Home page "Benefits of reflexology" list
+model Benefit {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  icon        String   @default("leaf") // key from BENEFIT_ICONS in src/components/BenefitsSection.tsx
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Home page "Social highlights": YouTube or Instagram links
+model SocialVideo {
+  id         String   @id @default(cuid())
+  url        String
+  title      String
+  coverImage String?
+  views      String?
+  likes      String?
+  comments   String?
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

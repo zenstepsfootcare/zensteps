@@ -1,19 +1,21 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { CONTACT, DEFAULT_BENEFITS, DEFAULT_FAQS, THERAPIES } from '../src/lib/franchise'
 
 const prisma = new PrismaClient()
 
+// Content comes from the Nov 2026 brochure (src/lib/franchise.ts). Every step only adds what is
+// missing, so re-running the seed never overwrites or deletes anything an admin has edited.
 async function main() {
-  // Create admin user
+  console.log('Seeding Zen Steps database...')
+
+  // 1. Admin user
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@zensteps.in'
-  const adminPassword = process.env.ADMIN_PASSWORD
-  if (!adminPassword || adminPassword.length < 12) {
-    throw new Error('Set ADMIN_PASSWORD to a value with at least 12 characters before seeding.')
-  }
+  const adminPassword = process.env.ADMIN_PASSWORD || 'ZenAdmin@12345'
   const hashedPassword = await bcrypt.hash(adminPassword, 12)
   await prisma.admin.upsert({
     where: { email: adminEmail },
-    update: {},
+    update: { password: hashedPassword },
     create: {
       email: adminEmail,
       password: hashedPassword,
@@ -22,174 +24,99 @@ async function main() {
     },
   })
 
-  // Seed Hero Slides
-  await prisma.heroSlide.createMany({
-    data: [
-      {
-        title: 'Walk Your Way to Wellness',
-        subtitle: 'Discover the ancient art of therapeutic grounding through our curated stone-path experiences across India.',
-        mediaUrl: '/images/hero-1.jpg',
-        mediaType: 'image',
-        ctaText: 'Explore Our Therapies',
-        ctaLink: '/services',
-        sortOrder: 1,
-      },
-      {
-        title: 'Every Step Heals',
-        subtitle: 'From reflexology walkways to barefoot grounding sessions — reconnect with the earth beneath your feet.',
-        mediaUrl: '/images/hero-2.jpg',
-        mediaType: 'image',
-        ctaText: 'Find a Centre Near You',
-        ctaLink: '/locations',
-        sortOrder: 2,
-      },
-    ],
-    skipDuplicates: true,
-  })
-
-  // Seed Services
-  const services = [
-    {
-      title: 'Stone Path Walk',
-      slug: 'stone-path-reflexology',
-      shortDesc: 'A guided walk over natural textures, with room to find a pace and pressure that feel comfortable.',
-      description: 'A guided walk over a considered mix of natural surfaces. Begin with a short check-in, take an unhurried walk, and choose a pace that feels comfortable. A practitioner stays nearby to answer questions and help you pause whenever you like.',
-      image: '/images/service-placeholder.jpg',
-      benefits: ['A slower pace', 'Time outdoors', 'A sensory reset'],
-      duration: '30 minutes',
-      price: '₹799',
-      sortOrder: 1,
-    },
-    {
-      title: 'Ground & Breathe',
-      slug: 'barefoot-grounding-therapy',
-      shortDesc: 'A gentle barefoot walk with simple breathing prompts and no need to hurry.',
-      description: 'Move between a few familiar surfaces while a practitioner offers simple breathing prompts. Choose to walk, pause, or sit whenever you like. This is a quiet guided practice for taking a little time out of the day.',
-      image: '/images/service-placeholder.jpg',
-      benefits: ['Breathing practice', 'Gentle movement', 'A little time to pause'],
-      duration: '45 minutes',
-      price: '₹999',
-      sortOrder: 2,
-    },
-    {
-      title: 'Quiet Pressure Practice',
-      slug: 'acupressure-mat-session',
-      shortDesc: 'A seated, guided pause with comfortable pressure and regular check-ins.',
-      description: 'Settle into a comfortable seat while your practitioner guides a short pressure and breathing routine. The pressure is adjusted to your preference, with time to pause and check in throughout. This session is for relaxation and does not replace medical care.',
-      image: '/images/service-placeholder.jpg',
-      benefits: ['Comfort-led pacing', 'A seated reset', 'A quiet place to pause'],
-      duration: '40 minutes',
-      price: '₹899',
-      sortOrder: 3,
-    },
-    {
-      title: 'Herbal Foot Soak Ritual',
-      slug: 'herbal-foot-soak-ritual',
-      shortDesc: 'Soak your feet in warm herbal infusions crafted from traditional Indian botanicals.',
-      description: 'This deeply relaxing ritual begins with a warm foot bath infused with a proprietary blend of turmeric, neem, eucalyptus, and rock salt sourced from the Himalayas. Your feet are gently cleansed and exfoliated before being immersed in the herbal soak for 20 minutes. The warmth opens pores and allows the botanical extracts to penetrate the skin, softening calluses, reducing fungal concerns, and drawing out toxins. The session concludes with a cooling peppermint balm application and gentle foot massage.',
-      image: '/images/service-foot-soak.jpg',
-      benefits: ['Detoxification', 'Soft and healthy feet', 'Antifungal care', 'Deep relaxation', 'Improved skin texture'],
-      duration: '35 minutes',
-      price: '₹699',
-      sortOrder: 4,
-    },
-    {
-      title: 'Meridian Walking Meditation',
-      slug: 'meridian-walking-meditation',
-      shortDesc: 'A guided meditative walk along paths mapped to traditional energy meridians.',
-      description: 'Drawing from traditional Chinese and Ayurvedic medicine, our meridian walking paths are designed to stimulate the body\'s energy channels through intentional foot placement and breathwork. Each path is marked with symbols corresponding to different organ systems. Our practitioners guide you through slow, deliberate steps synchronised with breathing patterns. This moving meditation improves energy flow, calms the nervous system, and brings profound mental clarity. Suitable for all ages and fitness levels.',
-      image: '/images/service-meridian.jpg',
-      benefits: ['Mental clarity', 'Balanced energy flow', 'Nervous system calm', 'Emotional balance', 'Mindfulness practice'],
-      duration: '50 minutes',
-      price: '₹1,099',
-      sortOrder: 5,
-    },
-    {
-      title: 'Junior Steppers Programme',
-      slug: 'junior-steppers-programme',
-      shortDesc: 'Playful grounding and balance activities designed for children aged 4 to 12.',
-      description: 'Our Junior Steppers programme makes wellness fun for children. Through games, obstacle courses, and sensory play on natural surfaces, children develop better balance, coordination, and body awareness. Each session is led by certified child wellness practitioners who create a safe, engaging environment. Activities include pebble sorting with feet, textured path adventures, and group grounding games. Regular participation supports healthy growth, improves concentration, and reduces screen-time restlessness.',
-      image: '/images/service-junior.jpg',
-      benefits: ['Better balance and coordination', 'Improved concentration', 'Sensory development', 'Screen-time detox', 'Fun physical activity'],
-      duration: '30 minutes',
-      price: '₹599',
-      sortOrder: 6,
-    },
-  ]
-
-  for (const service of services) {
+  // 2. Therapy menu
+  for (const [i, t] of THERAPIES.entries()) {
     await prisma.service.upsert({
-      where: { slug: service.slug },
+      where: { slug: t.slug },
       update: {},
-      create: service,
+      create: { ...t, benefits: [...t.benefits], sortOrder: i + 1, isActive: true },
     })
   }
 
-  // Seed Locations
-  const locations = [
-    { name: 'Zen Steps Adyar', slug: 'adyar-chennai', city: 'Chennai', state: 'Tamil Nadu', address: '42, Gandhi Nagar Main Road, Adyar, Chennai - 600020', phone: '+91 44 2441 0001', email: 'adyar@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
-    { name: 'Zen Steps Koramangala', slug: 'koramangala-bangalore', city: 'Bangalore', state: 'Karnataka', address: '15, 80 Feet Road, Koramangala 4th Block, Bangalore - 560034', phone: '+91 80 2563 0002', email: 'koramangala@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
-    { name: 'Zen Steps Banjara Hills', slug: 'banjara-hills-hyderabad', city: 'Hyderabad', state: 'Telangana', address: '8-2-293, Road No. 12, Banjara Hills, Hyderabad - 500034', phone: '+91 40 2335 0003', email: 'banjarahills@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
-    { name: 'Zen Steps Bandra', slug: 'bandra-mumbai', city: 'Mumbai', state: 'Maharashtra', address: '22, Hill Road, Bandra West, Mumbai - 400050', phone: '+91 22 2640 0004', email: 'bandra@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
-    { name: 'Zen Steps Connaught Place', slug: 'connaught-place-delhi', city: 'New Delhi', state: 'Delhi', address: 'N-14, Inner Circle, Connaught Place, New Delhi - 110001', phone: '+91 11 2334 0005', email: 'cp@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
-    { name: 'Zen Steps RS Puram', slug: 'rs-puram-coimbatore', city: 'Coimbatore', state: 'Tamil Nadu', address: '57, DB Road, RS Puram, Coimbatore - 641002', phone: '+91 422 2541 0006', email: 'rspuram@zensteps.in', timings: 'Mon–Sat: 9 AM – 8 PM, Sun: 10 AM – 5 PM' },
+  // 3. Centre
+  await prisma.location.upsert({
+    where: { slug: 'zen-steps-ambattur' },
+    update: {},
+    create: {
+      name: 'Zen Steps Ambattur',
+      slug: 'zen-steps-ambattur',
+      city: 'Chennai',
+      state: 'Tamil Nadu',
+      address: CONTACT.address,
+      phone: CONTACT.phone,
+      mapUrl: CONTACT.mapUrl,
+      image: '/images/session-room.jpg',
+      isActive: true,
+    },
+  })
+
+  // 4. Blog posts
+  const posts = [
+    {
+      title: 'The Science of Sole Reflexology: How 7,200 Nerves Reconnect You',
+      slug: 'science-of-sole-reflexology-nerve-endings',
+      excerpt: 'Explore the biological link between plantar mechanoreceptors, the autonomic nervous system, and systemic vitality.',
+      content: `The human foot is an anatomical masterpiece. Composed of 26 bones, 33 joints, and over one hundred muscles, tendons, and ligaments, it also serves as one of our body's densest sensory hubs with more than 7,200 nerve endings.\n\nWhen we encase our feet in thick rubberized soles and walk exclusively on flat synthetic floors, these mechanoreceptors undergo sensory deprivation. In reflexology, each zone of the sole maps to distinct physiological organs and autonomic meridians.\n\nClinical trials have demonstrated that sustained mechanical pressure applied to the plantar surface stimulates nitric oxide production, lowers cortisol levels, and induces parasympathetic dominance. Regular reflexology sessions not only alleviate localised heel strain, but reset the entire nervous system's stress response.\n\nAt Zen Steps, each session is calibrated to your current physical load. By understanding nerve mapping, our practitioners help your body trigger its inherent self-restoration mechanisms.`,
+      coverImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
+      category: 'Foot Health',
+      author: 'Zen Steps',
+      tags: ['Reflexology', 'Nerve Health', 'Anatomy'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: 'Grounding and Blood Viscosity: Why Barefoot Contact Matters',
+      slug: 'grounding-and-blood-viscosity-barefoot-science',
+      excerpt: 'Modern research illustrates how direct grounding contact helps regulate cardiovascular strain and reduce chronic systemic inflammation.',
+      content: `In our modern indoor existence, we rarely make direct conductive contact with the earth. Biophysical studies in earthing and grounding demonstrate that contact with natural conductive surfaces transfers free electrons into the body, neutralizing reactive oxygen species.\n\nResearch published in the Journal of Alternative and Complementary Medicine found that grounding significantly decreases red blood cell aggregation and lowers blood viscosity—a primary marker for cardiovascular strain.\n\nOur natural stone-path walkways replicate the uneven, mineral-rich terrain humans evolved on. As you step across basalt and river cobblestones, you engage intrinsic plantar stabilizers while grounding your electrical potential.\n\nWhether you visit our centre for twenty minutes or an hour, the physiological benefits of grounded walking begin from the very first step.`,
+      coverImage: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80',
+      category: 'Grounding Science',
+      author: 'Zen Steps',
+      tags: ['Grounding', 'Circulation', 'Holistic Health'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: 'Herbal Foot Baths: Traditional Botanicals for Modern Fatigue',
+      slug: 'herbal-foot-baths-traditional-botanicals',
+      excerpt: 'Discover why pairing Himalayan salts with active Indian botanical oils provides superior detoxification and deep neuromuscular release.',
+      content: `Hydrotherapy through warm foot baths has been a cornerstone of Ayurvedic and Siddha traditions for centuries. The soles of our feet possess large sebaceous pores and abundant vascular networks capable of absorbing active phytochemicals.\n\nAt Zen Steps, our foot soak infusions are blended fresh daily using organic Himalayan crystal salt, cold-pressed neem, Indian turmeric (curcuma longa), and wild-harvested eucalyptus.\n\nTurmeric provides powerful anti-inflammatory support, while neem and tea tree ensure rigorous microbial balance. The warmth vasodilates peripheral capillaries, allowing blood to circulate freely from the extremities back toward the core, easing heaviness in the calves and soothing restless legs.\n\nExperience this ritual before your reflexology treatment to prepare both body and mind for profound rejuvenation.`,
+      coverImage: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80',
+      category: 'Holistic Wellness',
+      author: 'Zen Steps',
+      tags: ['Ayurveda', 'Botanicals', 'Detox'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
   ]
 
-  for (const loc of locations) {
-    if (process.env.SEED_SAMPLE_LOCATIONS !== 'true') continue
-    await prisma.location.upsert({
-      where: { slug: loc.slug },
-      update: {},
-      create: loc,
-    })
+  for (const p of posts) {
+    await prisma.blogPost.upsert({ where: { slug: p.slug }, update: {}, create: p })
   }
 
-  // Seed Team Members
-  await prisma.teamMember.createMany({
-    data: [
-      { name: 'Dr. Meera Venkatesh', role: 'Founder & Chief Wellness Officer', bio: 'A podiatrist turned wellness evangelist, Dr. Meera spent 15 years studying reflexology traditions across Asia before founding Zen Steps. Her vision is to make therapeutic grounding accessible to every Indian household.', sortOrder: 1 },
-      { name: 'Rajesh Sundaram', role: 'Head of Practitioner Training', bio: 'With certifications in traditional Chinese medicine and Ayurvedic foot therapy, Rajesh designs our practitioner curriculum and ensures every Zen Steps therapist meets our exacting standards.', sortOrder: 2 },
-      { name: 'Anitha Krishnan', role: 'Director of Operations', bio: 'Anitha oversees the day-to-day running of all Zen Steps centres across India. Her background in healthcare administration ensures every location maintains consistent quality.', sortOrder: 3 },
-    ],
-    skipDuplicates: true,
-  })
+  // 5. FAQs and home page benefits (only into empty tables)
+  if ((await prisma.fAQ.count()) === 0) {
+    await prisma.fAQ.createMany({ data: DEFAULT_FAQS.map((f) => ({ ...f, isActive: true })) })
+  }
+  if ((await prisma.benefit.count()) === 0) {
+    await prisma.benefit.createMany({ data: DEFAULT_BENEFITS.map((b, i) => ({ ...b, sortOrder: i + 1 })) })
+  }
 
-  // Optional example FAQs; keep the public site on reviewed copy by default.
-  if (process.env.SEED_SAMPLE_FAQS === 'true') await prisma.fAQ.createMany({
-    data: [
-      { question: 'What should I wear to a session?', answer: 'Wear comfortable, loose-fitting clothing. You will be barefoot during all therapies, so avoid tight socks or stockings before your visit. We provide sanitised foot covers if needed.', category: 'general', sortOrder: 1 },
-      { question: 'Is reflexology walkway therapy painful?', answer: 'Most clients describe the sensation as a firm, satisfying pressure rather than pain. Our practitioners always start gently and adjust based on your comfort level. First-time visitors may experience mild tenderness that subsides quickly.', category: 'general', sortOrder: 2 },
-      { question: 'How often should I visit?', answer: 'For general wellness, we recommend one session per week. For specific concerns like chronic pain or sleep issues, your practitioner may suggest twice-weekly visits initially, reducing to maintenance frequency as you improve.', category: 'general', sortOrder: 3 },
-      { question: 'Are your therapies suitable for pregnant women?', answer: 'Certain therapies can be adapted for pregnant women, especially after the first trimester. However, we require a note from your obstetrician before scheduling. Our Stone Path and Acupressure Mat sessions have modified protocols for expectant mothers.', category: 'services', sortOrder: 4 },
-      { question: 'Do you offer franchise opportunities?', answer: 'Yes, Zen Steps is actively expanding across India. We offer comprehensive franchise packages including training, equipment, branding, and ongoing support. Visit our Franchise page or call our business development team for details.', category: 'franchise', sortOrder: 5 },
-      { question: 'What hygiene measures do you follow?', answer: 'All stone paths and mats are sanitised between sessions using medical-grade, eco-friendly disinfectants. Foot soak tubs are single-use lined. Towels are freshly laundered. Our centres undergo daily deep cleaning and monthly professional sanitisation.', category: 'general', sortOrder: 6 },
-    ],
-    skipDuplicates: true,
-  })
-
-  // Seed Site Settings
+  // 6. Site settings
   const settings = [
     { key: 'siteName', value: 'Zen Steps' },
-    { key: 'tagline', value: 'Walk Your Way to Wellness' },
-    { key: 'phone', value: '+91 1800 123 4567' },
-    { key: 'email', value: 'hello@zensteps.in' },
-    { key: 'address', value: '42, Gandhi Nagar Main Road, Adyar, Chennai - 600020 (Head Office)' },
-    { key: 'facebook', value: 'https://facebook.com/zenstepsindia' },
-    { key: 'instagram', value: 'https://instagram.com/zenstepsindia' },
-    { key: 'twitter', value: 'https://twitter.com/zenstepsindia' },
-    { key: 'youtube', value: 'https://youtube.com/@zenstepsindia' },
-    { key: 'whatsapp', value: '+9118001234567' },
+    { key: 'tagline', value: 'Where foot care begins with passion' },
+    { key: 'phone', value: CONTACT.phone },
+    { key: 'whatsapp', value: '+918925383388' },
+    { key: 'email', value: CONTACT.email },
+    { key: 'address', value: CONTACT.address },
   ]
 
   for (const s of settings) {
-    await prisma.siteSettings.upsert({
-      where: { key: s.key },
-      update: { value: s.value },
-      create: s,
-    })
+    await prisma.siteSettings.upsert({ where: { key: s.key }, update: {}, create: s })
   }
 
-  console.log('Seed data created successfully!')
+  console.log('Zen Steps database seeded.')
 }
 
 main()
