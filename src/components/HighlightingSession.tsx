@@ -13,8 +13,8 @@ export function HighlightingSession() {
           <div className="lg:col-span-7">
             <figure className="bg-brand-dark">
               <img
-                src="/images/session-room.jpg"
-                alt="Two Zen Steps therapists giving foot reflexology sessions to guests resting in green lounge chairs"
+                src="/images/highlight-session.jpg"
+                alt="Zen Steps certified visually impaired therapists performing therapeutic foot reflexology on guests resting in comfortable recliners"
                 width={1600}
                 height={900}
                 className="h-auto w-full object-cover"

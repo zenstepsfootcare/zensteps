@@ -22,7 +22,7 @@ const getPosts = unstable_cache(
       orderBy: { publishedAt: "desc" },
     });
   },
-  ["zen-steps-all-posts-v2"],
+  ["zen-steps-all-posts-v3"],
   { revalidate: 3600, tags: ["journal"] }
 );
 
@@ -37,8 +37,8 @@ export default async function JournalPage() {
       <main className="flex-1">
         <PageHero
           eyebrow="Field Notes & Clinical Journal"
-          title="Reflexology Science & Grounding Research."
-          subtitle="Essays, anatomical studies, and clinical observations on human plantar health, sensory deprivation, and somatic restoration."
+          title="Plantar Science & Foot Reflexology Journal"
+          subtitle="Clinical studies, anatomical sole mapping, and tactile therapy observations from the Zen Steps master reflexologists."
         />
 
         <section className="section bg-paper">

@@ -53,7 +53,7 @@ export function PostCard({
 
   return (
     <article className={`flex h-full flex-col ${surface} ${featured ? "lg:grid lg:grid-cols-12" : ""}`}>
-      <div className={`relative aspect-[16/10] overflow-hidden bg-border ${featured ? "lg:col-span-7 lg:aspect-auto lg:min-h-[380px]" : ""}`}>
+      <div className={`relative aspect-[16/10] overflow-hidden bg-transparent ${featured ? "lg:col-span-7 lg:aspect-auto lg:min-h-[380px]" : ""}`}>
         <img
           src={post.coverImage}
           alt={post.title}

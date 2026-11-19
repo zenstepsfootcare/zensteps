@@ -76,7 +76,7 @@ const getHomeData = unstable_cache(
     ]);
     return { services, benefits, videos, settingRows, testimonials, posts, faqs };
   },
-  ["zen-steps-home-brochure-v1"],
+  ["zen-steps-home-brochure-v2"],
   { revalidate: 3600, tags: ["home", "services"] }
 );
 
@@ -214,9 +214,9 @@ export default async function Home() {
             <div className="container-site">
               <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-12">
                 <SectionHeader
-                  eyebrow="From the Blog"
-                  title="Foot Care and Wellness Notes"
-                  subtitle="Guidance on reflexology, foot care and everyday well-being."
+                  eyebrow="Clinical Research & Notes"
+                  title="Foot Reflexology & Plantar Science"
+                  subtitle="Clinical insights on sole nerve stimulation, plantar fasciitis relief, and tactile therapy."
                 />
                 <Link href="/journal" className="link-arrow shrink-0">
                   <span>Read the Blog</span>

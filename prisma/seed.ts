@@ -50,48 +50,60 @@ async function main() {
     },
   })
 
-  // 4. Blog posts
+  // 4. Blog posts (Strictly Foot Reflexology & Plantar Health Only)
   const posts = [
     {
-      title: 'The Science of Sole Reflexology: How 7,200 Nerves Reconnect You',
+      title: 'The Science of Sole Reflexology: How 7,200 Plantar Nerves Reset the Body',
       slug: 'science-of-sole-reflexology-nerve-endings',
-      excerpt: 'Explore the biological link between plantar mechanoreceptors, the autonomic nervous system, and systemic vitality.',
-      content: `The human foot is an anatomical masterpiece. Composed of 26 bones, 33 joints, and over one hundred muscles, tendons, and ligaments, it also serves as one of our body's densest sensory hubs with more than 7,200 nerve endings.\n\nWhen we encase our feet in thick rubberized soles and walk exclusively on flat synthetic floors, these mechanoreceptors undergo sensory deprivation. In reflexology, each zone of the sole maps to distinct physiological organs and autonomic meridians.\n\nClinical trials have demonstrated that sustained mechanical pressure applied to the plantar surface stimulates nitric oxide production, lowers cortisol levels, and induces parasympathetic dominance. Regular reflexology sessions not only alleviate localised heel strain, but reset the entire nervous system's stress response.\n\nAt Zen Steps, each session is calibrated to your current physical load. By understanding nerve mapping, our practitioners help your body trigger its inherent self-restoration mechanisms.`,
-      coverImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
-      category: 'Foot Health',
+      excerpt: 'Explore the biological link between plantar mechanoreceptors, the autonomic nervous system, and systemic bodily restoration.',
+      content: `The human foot is an anatomical marvel containing 26 bones, 33 joints, and over one hundred muscles, tendons, and ligaments. Crucially, each foot is one of the body's densest sensory epicentres, packed with more than 7,200 nerve endings.\n\nWhen we spend long hours in rigid shoes walking over flat synthetic surfaces, these plantar mechanoreceptors undergo sensory starvation. In therapeutic reflexology, specific zones across the plantar fascia map directly to internal organs, endocrine glands, and nervous meridians.\n\nClinical studies demonstrate that sustained, rhythmic thumb pressure applied to specific plantar reflex arcs triggers parasympathetic nervous system dominance. This lowers systemic cortisol, stimulates localized nitric oxide release, and relieves arterial tension. Regular foot reflexology sessions not only alleviate localised heel strain, but signal the entire central nervous system to shift into a deep restorative state.\n\nAt Zen Steps, each session is calibrated to your individual physical fatigue profile. Guided purely by tactile discernment, our practitioners systematically work through these 7,200 nerve endings to restore equilibrium throughout your body.`,
+      coverImage: '/images/reflexology-benefits.jpg',
+      category: 'Plantar Reflexology',
       author: 'Zen Steps',
-      tags: ['Reflexology', 'Nerve Health', 'Anatomy'],
+      tags: ['Foot Reflexology', 'Plantar Nerves', 'Acupressure'],
       isPublished: true,
       publishedAt: new Date(),
     },
     {
-      title: 'Grounding and Blood Viscosity: Why Barefoot Contact Matters',
-      slug: 'grounding-and-blood-viscosity-barefoot-science',
-      excerpt: 'Modern research illustrates how direct grounding contact helps regulate cardiovascular strain and reduce chronic systemic inflammation.',
-      content: `In our modern indoor existence, we rarely make direct conductive contact with the earth. Biophysical studies in earthing and grounding demonstrate that contact with natural conductive surfaces transfers free electrons into the body, neutralizing reactive oxygen species.\n\nResearch published in the Journal of Alternative and Complementary Medicine found that grounding significantly decreases red blood cell aggregation and lowers blood viscosity—a primary marker for cardiovascular strain.\n\nOur natural stone-path walkways replicate the uneven, mineral-rich terrain humans evolved on. As you step across basalt and river cobblestones, you engage intrinsic plantar stabilizers while grounding your electrical potential.\n\nWhether you visit our centre for twenty minutes or an hour, the physiological benefits of grounded walking begin from the very first step.`,
-      coverImage: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80',
-      category: 'Grounding Science',
+      title: 'Relieving Plantar Fasciitis & Foot Fatigue Through Targeted Acupressure',
+      slug: 'plantar-fasciitis-relief-foot-acupressure',
+      excerpt: 'How targeted calcaneal pressure and longitudinal arch mobilization relieve morning heel pain, plantar fasciitis, and occupational foot fatigue.',
+      content: `Plantar fasciitis is one of the most widespread foot ailments in modern urban living. Prolonged standing, hard tile floors, and improper arch support create micro-tears and localized inflammation where the plantar fascia anchors to the calcaneus (heel bone).\n\nWhile standard painkillers mask the discomfort temporarily, clinical foot reflexology addresses the mechanical and circulatory root causes. By applying sustained directional thumb pressure along the medial longitudinal arch, reflexology releases fascial adhesions, relaxes the flexor hallucis brevis, and stimulates microvascular blood flow to dormant tissues.\n\nAt Zen Steps, our therapists utilize deep thumb-walking techniques along the plantar fascia and Achilles insertion points. This breaks up calcified tension pockets and encourages healthy collagen realignment.\n\nGuests suffering from chronic foot fatigue or sharp morning heel stiffness experience notable relief within 2 to 3 sessions as elasticity and natural shock absorption are restored to the arch.`,
+      coverImage: '/images/session-closeup.jpg',
+      category: 'Foot Therapy',
       author: 'Zen Steps',
-      tags: ['Grounding', 'Circulation', 'Holistic Health'],
+      tags: ['Plantar Fasciitis', 'Heel Pain', 'Arch Mechanics'],
       isPublished: true,
       publishedAt: new Date(),
     },
     {
-      title: 'Herbal Foot Baths: Traditional Botanicals for Modern Fatigue',
+      title: 'Herbal Foot Soaks: Traditional Indian Botanicals for Plantar Circulation',
       slug: 'herbal-foot-baths-traditional-botanicals',
-      excerpt: 'Discover why pairing Himalayan salts with active Indian botanical oils provides superior detoxification and deep neuromuscular release.',
-      content: `Hydrotherapy through warm foot baths has been a cornerstone of Ayurvedic and Siddha traditions for centuries. The soles of our feet possess large sebaceous pores and abundant vascular networks capable of absorbing active phytochemicals.\n\nAt Zen Steps, our foot soak infusions are blended fresh daily using organic Himalayan crystal salt, cold-pressed neem, Indian turmeric (curcuma longa), and wild-harvested eucalyptus.\n\nTurmeric provides powerful anti-inflammatory support, while neem and tea tree ensure rigorous microbial balance. The warmth vasodilates peripheral capillaries, allowing blood to circulate freely from the extremities back toward the core, easing heaviness in the calves and soothing restless legs.\n\nExperience this ritual before your reflexology treatment to prepare both body and mind for profound rejuvenation.`,
-      coverImage: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80',
-      category: 'Holistic Wellness',
+      excerpt: 'Discover how pairing mineral-rich salts with active Indian botanical infusions prepares the soles for deeper reflexology release.',
+      content: `Hydrotherapy through warm foot soaks has been an essential precursor to foot reflexology in Eastern traditions for centuries. The soles of our feet possess large sebaceous pores and dense micro-capillary networks that respond immediately to temperature and herbal infusions.\n\nAt Zen Steps, every reflexology ritual begins with a preparatory botanical foot soak in traditional bronze bowls. We blend pure Himalayan rock salts with cold-pressed neem, wild-harvested turmeric (Curcuma longa), and essential oils of eucalyptus and camphor.\n\nThe therapeutic warmth induces peripheral vasodilation, easing heavy legs and softening the plantar epidermis. Turmeric delivers localized anti-inflammatory support, while mineral salts reduce extracellular fluid buildup in swollen ankles.\n\nThis restorative 10-minute foot soak calms the autonomic nervous system and primes the nerve endings of the feet, enabling the therapist to achieve significantly deeper and more effective reflexology work.`,
+      coverImage: '/images/botanical-foot-bath.jpg',
+      category: 'Foot Care Rituals',
       author: 'Zen Steps',
-      tags: ['Ayurveda', 'Botanicals', 'Detox'],
+      tags: ['Foot Soak', 'Plantar Circulation', 'Botanical Care'],
+      isPublished: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: 'The Tactile Advantage: Why Visually Impaired Practitioners Excel at Reflexology',
+      slug: 'tactile-advantage-visually-impaired-reflexologists',
+      excerpt: 'How neuroplastic tactile adaptation allows visually impaired reflexologists to detect minute plantar tension knots undetectable by sight.',
+      content: `When sight is absent or diminished, the human brain undergoes cross-modal neuroplasticity. The somatosensory cortex expands, giving the fingertips an extraordinary degree of tactile sensitivity, spatial discrimination, and pressure feedback.\n\nIn foot reflexology, the difference between an average session and a transformative one lies in the sensitivity of touch. A visually impaired practitioner can feel subtle crystalline deposits (uric acid micro-accumulations), localized temperature fluctuations, and microscopic fascial adhesions along the foot reflex meridians that sight-guided therapists often miss.\n\nAt Zen Steps, we train certified visually impaired artisans to harness this innate sensory gift into mastery of plantar reflexology. Because our practitioners do not rely on visual distraction, their complete mental presence is concentrated in the tips of their fingers.\n\nThe result is a deeply intuitive, meticulously calibrated foot reflexology treatment that targets stress points with unmatched precision.`,
+      coverImage: '/images/highlight-session.jpg',
+      category: 'Clinical Reflexology',
+      author: 'Zen Steps',
+      tags: ['Tactile Science', 'Visually Impaired Mastery', 'Foot Reflexology'],
       isPublished: true,
       publishedAt: new Date(),
     },
   ]
 
   for (const p of posts) {
-    await prisma.blogPost.upsert({ where: { slug: p.slug }, update: {}, create: p })
+    await prisma.blogPost.upsert({ where: { slug: p.slug }, update: p, create: p })
   }
 
   // 5. FAQs and home page benefits (only into empty tables)

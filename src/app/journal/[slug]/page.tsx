@@ -25,7 +25,7 @@ const getPost = unstable_cache(
       where: { slug, isPublished: true },
     });
   },
-  ["zen-steps-single-post-v2"],
+  ["zen-steps-single-post-v3"],
   { revalidate: 3600, tags: ["journal"] }
 );
 
@@ -37,7 +37,7 @@ const getMorePosts = unstable_cache(
       take: 3,
     });
   },
-  ["zen-steps-more-posts-v1"],
+  ["zen-steps-more-posts-v2"],
   { revalidate: 3600, tags: ["journal"] }
 );
 
