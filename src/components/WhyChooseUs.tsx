@@ -22,6 +22,11 @@ export function WhyChooseUs() {
                 <BrandIcon name={item.icon} className="h-6 w-6" />
               </span>
               <h3 className="mt-5 text-lg font-semibold text-gold">{item.title}</h3>
+              {item.highlight && (
+                <p className="mt-3 inline-block bg-gold px-3 py-1 text-sm font-bold uppercase tracking-wide text-brand">
+                  {item.highlight}
+                </p>
+              )}
               <p className="mt-2 text-sm leading-relaxed text-white/80 sm:text-[15px]">{item.text}</p>
             </li>
           ))}

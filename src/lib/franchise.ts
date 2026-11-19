@@ -45,13 +45,14 @@ export type IconKey =
   | "meditate"
   | "handshake";
 
-export const WHY_CHOOSE: { icon: IconKey; title: string; text: string }[] = [
+export const WHY_CHOOSE: { icon: IconKey; title: string; text: string; highlight?: string }[] = [
   { icon: "rupee", title: "Low Investment", text: "Affordable investment with high potential returns." },
   { icon: "calendar", title: "Break-Even Within 6 Months", text: "Quick break-even with efficient operations." },
   { icon: "growth", title: "Profit Margin Up to 80%", text: "High-profit business model with strong growth." },
   {
     icon: "therapists",
     title: "Therapists Provided by the Brand",
+    highlight: "100% Manpower Support",
     text: "Trained and experienced therapists, managed by us.",
   },
   {
@@ -203,7 +204,7 @@ export const THERAPIES = [
 /** Home page benefits (Benefit table). Icons are keys of BENEFIT_ICONS in src/components/BenefitsSection.tsx. */
 export const DEFAULT_BENEFITS = [
   { title: "Relieves Stress", icon: "stress", description: "Helps reduce stress and promotes relaxation." },
-  { title: "Improves Circulation", icon: "heart", description: "Enhances blood flow and supports overall wellness." },
+  { title: "Improves Blood Circulation", icon: "heart", description: "Enhances blood flow and supports overall wellness." },
   { title: "Enhances Sleep", icon: "sleep", description: "Promotes better sleep and helps relieve fatigue." },
   {
     title: "Supports Natural Detoxification",

@@ -12,7 +12,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { HeroVideo } from "@/components/HeroVideo";
 import { HeroEnquiryCard } from "@/components/HeroEnquiryCard";
 import { EnquireButton } from "@/components/EnquireButton";
-import { FranchisePriceBadge } from "@/components/FranchisePriceBadge";
+import { FranchisePriceBadge, ManpowerPromise } from "@/components/FranchisePriceBadge";
 import { BRAND_VIDEO } from "@/components/VideoHero";
 import { TAGLINES } from "@/lib/franchise";
 import { getContact } from "@/lib/siteSettings";
@@ -53,6 +53,8 @@ export default async function FranchisePage() {
                 Open your own Zen Steps foot reflexology centre. We provide the interior design, reflexology materials,
                 trained therapists and marketing support.
               </p>
+
+              <ManpowerPromise className="mt-6" />
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <EnquireButton href="#apply" className="btn btn-gold">

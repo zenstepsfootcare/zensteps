@@ -17,3 +17,15 @@ export function FranchisePriceBadge({ className = "" }: { className?: string }) 
     </div>
   );
 }
+
+const mark = "bg-gold px-1.5 text-brand box-decoration-clone [text-shadow:none]";
+
+/** The hero promise, with its two key phrases set on gold. */
+export function ManpowerPromise({ className = "" }: { className?: string }) {
+  return (
+    <p className={`max-w-2xl border-l-4 border-gold bg-brand-dark/85 px-4 py-3 text-lg font-semibold leading-relaxed text-white sm:text-xl ${className}`}>
+      Start your dream business with <mark className={mark}>100% lifetime manpower support</mark> and{" "}
+      <mark className={mark}>zero owner involvement</mark>.
+    </p>
+  );
+}

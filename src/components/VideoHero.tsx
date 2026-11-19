@@ -4,7 +4,7 @@ import { preload } from "react-dom";
 import { FiArrowRight, FiCheckCircle, FiPhone } from "react-icons/fi";
 import { HeroVideo } from "@/components/HeroVideo";
 import { EnquireButton } from "@/components/EnquireButton";
-import { FranchisePriceBadge } from "@/components/FranchisePriceBadge";
+import { FranchisePriceBadge, ManpowerPromise } from "@/components/FranchisePriceBadge";
 import { TAGLINES } from "@/lib/franchise";
 import { getContact } from "@/lib/siteSettings";
 
@@ -63,6 +63,8 @@ export async function VideoHero({
           <p className="lead mt-5 max-w-2xl text-white/85">{subtitle}</p>
 
           <FranchisePriceBadge className="mt-7" />
+
+          <ManpowerPromise className="mt-6" />
 
           <ul className="mt-6 flex flex-col gap-2.5 text-sm font-medium text-white sm:flex-row sm:flex-wrap sm:gap-x-6">
             {proofPoints.map((point) => (
