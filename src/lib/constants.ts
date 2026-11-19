@@ -1,7 +1,7 @@
 export const SITE_NAME = "Zen Steps";
 export const SITE_TAGLINE = "Where foot care begins with passion";
 export const SITE_DESCRIPTION =
-  "Zen Steps is a premium foot reflexology and wellness centre, with sessions given by trained therapists with visual impairments. Book a session in Chennai or start your own Zen Steps franchise from ₹1.5 lakh.";
+  "Zen Steps is a premium foot reflexology and wellness centre, with sessions given by trained therapists with visual impairments. Book a session in Chennai or start your own Zen Steps franchise from ₹2.5 lakh.";
 
 export const NAV_LINKS = [
   { label: "About", href: "/about" },

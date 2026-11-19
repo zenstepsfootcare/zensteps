@@ -28,21 +28,8 @@ export const COST_FIELDS: { key: keyof RoiCosts; label: string }[] = [
   { key: "electricity", label: "Electricity bill" },
 ];
 
-/** The three brochure setups, in PLANS order (src/lib/franchise.ts). */
+/** The brochure setups, in PLANS order (src/lib/franchise.ts). */
 export const PLAN_PRESETS: { key: string; label: string; inputs: RoiInputs }[] = [
-  {
-    key: "essential",
-    label: "Essential · 1 seater",
-    inputs: {
-      appointmentsPerDay: 12,
-      averageBilling: 450,
-      daysPerMonth: 30,
-      costs: { consumables: 7000, salary: 15000, rent: 0, food: 10000, electricity: 0 },
-      royalty: 5000,
-      royaltyFromMonth: 7,
-      investment: 150000,
-    },
-  },
   {
     key: "signature",
     label: "Signature · 2 seater",

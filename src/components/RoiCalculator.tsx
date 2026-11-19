@@ -79,7 +79,7 @@ export function RoiCalculator({ disclaimer }: { disclaimer: string }) {
     <div className="grid items-start gap-6 lg:grid-cols-12 lg:gap-8">
       {/* Inputs */}
       <div className="border border-border bg-white p-5 sm:p-7 lg:col-span-7">
-        <div role="group" aria-label="Setup" className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div role="group" aria-label="Setup" className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {PLAN_PRESETS.map((p, i) => (
             <button
               key={p.key}

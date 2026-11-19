@@ -81,7 +81,7 @@ export default async function AboutPage() {
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="h2 text-ink">{TAGLINES.impact}</h2>
               <p className="lead mt-4 text-secondary">
-                Book a session at our Chennai centre, or bring Zen Steps to your city with a franchise from ₹1.5 lakh.
+                Book a session at our Chennai centre, or bring Zen Steps to your city with a franchise from ₹2.5 lakh.
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link href="/contact" className="btn btn-brand">

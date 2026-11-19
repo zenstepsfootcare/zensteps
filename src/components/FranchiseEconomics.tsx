@@ -12,11 +12,11 @@ export function FranchiseEconomics() {
         <SectionHeader
           eyebrow="Investment Plans"
           title={`Start Your Zen Steps Centre From ${FRANCHISE_FROM}`}
-          subtitle="Three setup sizes, from a single-seater studio to a 3+ seater centre. Pick the one that fits your space and budget."
+          subtitle="Two setup sizes: a 2-seater centre or a 3+ seater centre. Pick the one that fits your space and budget."
           className="mb-10 lg:mb-12"
         />
 
-        <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {PLANS.map((plan) => (
             <li key={plan.key} className="flex flex-col bg-cream">
               <div className="aspect-[16/7] overflow-hidden bg-border">
@@ -40,7 +40,7 @@ export function FranchiseEconomics() {
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt className="text-secondary">Interior design</dt>
-                    <dd className="text-right font-semibold text-ink tabular-nums">{plan.interior ?? "Not required"}</dd>
+                    <dd className="text-right font-semibold text-ink tabular-nums">{plan.interior}</dd>
                   </div>
                 </dl>
 

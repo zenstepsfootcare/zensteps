@@ -22,9 +22,9 @@ import { FiArrowRight, FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Zen Steps Franchise – Start From ₹1.5 Lakh",
+  title: "Zen Steps Franchise – Start From ₹2.5 Lakh",
   description:
-    "Open a Zen Steps foot reflexology centre from ₹1.5 lakh. Break-even within 6 months, profit margin up to 80%, with interiors, therapists and marketing provided by the brand.",
+    "Open a Zen Steps foot reflexology centre from ₹2.5 lakh. Break-even within 6 months, profit margin up to 80%, with interiors, therapists and marketing provided by the brand.",
 };
 
 export default async function FranchisePage() {

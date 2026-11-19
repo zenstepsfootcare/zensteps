@@ -13,9 +13,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Zen Steps – Foot Reflexology & Franchise From ₹1.5 Lakh",
+  title: "Zen Steps – Foot Reflexology & Franchise From ₹2.5 Lakh",
   description:
-    "Premium foot reflexology by trained therapists with visual impairments, in Chennai. Book a session from ₹450, or open your own Zen Steps franchise from ₹1.5 lakh.",
+    "Premium foot reflexology by trained therapists with visual impairments, in Chennai. Book a session from ₹450, or open your own Zen Steps franchise from ₹2.5 lakh.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

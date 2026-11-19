@@ -19,13 +19,13 @@ PLAN_PRESETS.forEach((preset, i) => {
   assert.ok(r.paybackMonths !== null && r.paybackMonths <= 6, `${preset.key} breaks even within 6 months`);
 });
 
-// Royalty only from month 7: Essential = 6 × 1,30,000 + 6 × 1,25,000.
-assert.equal(computeRoi(PLAN_PRESETS[0].inputs).firstYearProfit, 6 * 130000 + 6 * 125000);
+// Royalty only from month 7: Signature = 6 × 2,30,500 + 6 × 2,25,500.
+assert.equal(computeRoi(PLAN_PRESETS[0].inputs).firstYearProfit, 6 * 230500 + 6 * 225500);
 
 // A centre that never covers its costs has no payback; payback spanning the royalty month is counted.
 const base = PLAN_PRESETS[0].inputs;
 assert.equal(computeRoi({ ...base, appointmentsPerDay: 1 }).paybackMonths, null);
-const slow = computeRoi({ ...base, appointmentsPerDay: 4, costs: { ...base.costs, salary: 0, food: 0, consumables: 0 }, investment: 400000 });
+const slow = computeRoi({ ...base, appointmentsPerDay: 4, costs: { consumables: 0, salary: 0, rent: 0, food: 0, electricity: 0 }, investment: 400000 });
 // 4 × 450 × 30 = 54,000/month for 6 months (3,24,000), then 49,000/month: covered in month 8.
 assert.equal(slow.paybackMonths, 8);
 

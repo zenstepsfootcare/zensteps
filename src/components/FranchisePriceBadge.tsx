@@ -2,7 +2,7 @@ import React from "react";
 import { FiAward } from "react-icons/fi";
 import { FRANCHISE_FROM, TAGLINES } from "@/lib/franchise";
 
-/** The headline offer, set large: "Franchise starting from ₹1.5 Lakh". */
+/** The headline offer, set large: "Franchise starting from ₹2.5 Lakh". */
 export function FranchisePriceBadge({ className = "" }: { className?: string }) {
   return (
     <div className={`inline-flex items-center gap-4 border-2 border-gold bg-brand-dark/85 px-5 py-3.5 sm:gap-5 sm:px-6 ${className}`}>

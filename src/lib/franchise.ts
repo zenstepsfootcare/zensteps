@@ -21,7 +21,7 @@ export const TAGLINES = {
   journey: "Be a part of a meaningful journey",
 } as const;
 
-export const FRANCHISE_FROM = "₹1.5 Lakh";
+export const FRANCHISE_FROM = "₹2.5 Lakh";
 
 export const ABOUT = {
   paragraphs: [
@@ -88,15 +88,6 @@ export const ROYALTY = { amount: "₹5,000/month", from: "Applicable from the 7t
 
 export const PLANS = [
   {
-    key: "essential",
-    name: "Essential Setup",
-    seats: "1 Seater",
-    total: "₹1,50,000",
-    franchiseFee: "₹1,50,000",
-    interior: null,
-    image: "/images/plan-essential.jpg",
-  },
-  {
     key: "signature",
     name: "Signature Setup",
     seats: "2 Seater",
@@ -123,19 +114,19 @@ export const PLAN_OPTIONS = [
 ];
 
 /** Monthly ROI projection, one value per plan in PLANS order. */
-export const ROI_ROWS: { label: string; values: readonly [string, string, string] }[] = [
-  { label: "Expected appointments per day", values: ["12", "23", "45"] },
-  { label: "Average billing (per customer)", values: ["₹450", "₹450", "₹450"] },
-  { label: "Expected sales per day", values: ["₹5,400", "₹10,350", "₹20,250"] },
-  { label: "Monthly turnover (30 days)", values: ["₹1,62,000", "₹3,10,500", "₹6,07,500"] },
-  { label: "Consumables", values: ["₹7,000", "₹13,000", "₹20,000"] },
-  { label: "Staff salary", values: ["₹15,000", "₹30,000", "₹60,000"] },
-  { label: "Rent", values: ["—", "₹15,000", "₹25,000"] },
-  { label: "Staff food & accommodation", values: ["₹10,000", "₹15,000", "₹20,000"] },
-  { label: "Electricity bill", values: ["—", "₹7,000", "₹10,000"] },
-  { label: "Total expenses (per month)", values: ["₹32,000", "₹80,000", "₹1,35,000"] },
+export const ROI_ROWS: { label: string; values: readonly [string, string] }[] = [
+  { label: "Expected appointments per day", values: ["23", "45"] },
+  { label: "Average billing (per customer)", values: ["₹450", "₹450"] },
+  { label: "Expected sales per day", values: ["₹10,350", "₹20,250"] },
+  { label: "Monthly turnover (30 days)", values: ["₹3,10,500", "₹6,07,500"] },
+  { label: "Consumables", values: ["₹13,000", "₹20,000"] },
+  { label: "Staff salary", values: ["₹30,000", "₹60,000"] },
+  { label: "Rent", values: ["₹15,000", "₹25,000"] },
+  { label: "Staff food & accommodation", values: ["₹15,000", "₹20,000"] },
+  { label: "Electricity bill", values: ["₹7,000", "₹10,000"] },
+  { label: "Total expenses (per month)", values: ["₹80,000", "₹1,35,000"] },
 ];
-export const ROI_PROFIT = ["₹1,30,000", "₹2,30,500", "₹4,72,500"] as const;
+export const ROI_PROFIT = ["₹2,30,500", "₹4,72,500"] as const;
 export const ROI_NOTE =
   "Figures shown are estimated and may vary based on location, operations, and business performance.";
 
@@ -227,7 +218,7 @@ export const DEFAULT_FAQS = [
     category: "franchise",
     question: "How much does a Zen Steps franchise cost?",
     answer:
-      "Franchises start from ₹1.5 lakh. Essential Setup (1 seater): ₹1,50,000 franchise fee, no interior cost. Signature Setup (2 seater): ₹2,50,000 franchise fee plus interior design from ₹1,00,000, a total of ₹3,50,000. Premium Setup (3 or more seater): ₹2,50,000 franchise fee plus interior design from ₹2,00,000, a total of ₹4,50,000.",
+      "Franchises start from ₹2.5 lakh. Signature Setup (2 seater): ₹2,50,000 franchise fee plus interior design from ₹1,00,000, a total of ₹3,50,000. Premium Setup (3 or more seater): ₹2,50,000 franchise fee plus interior design from ₹2,00,000, a total of ₹4,50,000.",
   },
   {
     category: "franchise",
